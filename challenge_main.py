@@ -44,7 +44,10 @@ print("\nThe current time and date is: " + time)
 
 # All usable functions within the program
 while True:
-    # Work with multiline string for input --- WIP
+    # Allows pass_dir to be edited and change while program is in use.
+    pass_dir
+
+    # Work with multiline string for intial input
     pro_input = input(
     "\nWhich process would you like to perform?"
     "\n\n1. Read an existing file."
@@ -108,7 +111,9 @@ while True:
             def_dir[0] = new_def
             print("\nSetting new default directory...")
         else:
-            print("Not a valid directory...")
+            os.mkdir(new_def)
+            def_dir[0] = new_def
+            print("\nCreating new default directory...")
         
         # Loads default directory changes into file for next load - Auto save after default directory change.
         try:
@@ -140,4 +145,11 @@ while True:
     if con_input == 'Yes':
         print('\nReturning to menu...') 
     else:
+        try:
+            with open(def_dir_file, 'w') as file_object:
+                json.dump(def_dir, file_object)
+        except FileNotFoundError:
+            print("\nCould not save information from this session!")
+        else:
+            print("\nAuto-save...")
         cf.Exit()
